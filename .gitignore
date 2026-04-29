@@ -1,1 +1,15 @@
+# Database credentials — NEVER upload
+config.php
 
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# Logs
+*.log
+error_log
