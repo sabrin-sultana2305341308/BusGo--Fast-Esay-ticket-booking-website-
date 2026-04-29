@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusGo - Fast & Easy Bus Ticket Booking</title>
+    <link rel="stylesheet" href="Style3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2><i class="fas fa-bus"></i> BusGo</h2>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#home" class="nav-link active" data-section="home">Home</a>
+                </li>
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#about" class="nav-link" data-section="about">About</a>
+                </li>
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+                </li>
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#policy" class="nav-link" data-section="policy">Cancellation Policy</a>
+                </li>
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#terms" class="nav-link" data-section="terms">Terms</a>
+                </li>
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#cancel" class="nav-link" data-section="cancel">My Tickets</a>
+                </li>
+                <li class="nav-item nav-user-item nav-logged-in" style="display:none">
+                    <span class="nav-user"><i class="fas fa-user-circle"></i> <span id="navUserName"></span></span>
+                </li>
+                <li class="nav-item nav-logged-in" style="display:none">
+                    <a href="#" class="nav-link nav-logout-btn" onclick="logout(); return false;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+                <li class="nav-item nav-guest-item">
+                    <a href="#auth" class="nav-link nav-auth-btn" data-section="auth">
+                        <i class="fas fa-sign-in-alt"></i> Login / Register
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- =================== AUTH SECTION =================== -->
+    <section id="auth" class="section active">
+        <div class="auth-wrapper">
+            <div class="auth-card">
+                <div class="auth-brand">
+                    <i class="fas fa-bus"></i>
+                    <span>BusGo</span>
+                </div>
+                <p class="auth-tagline">Fast & Easy Bus Ticket Booking</p>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="loginTab" onclick="switchAuthTab('login')">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="auth-tab" id="registerTab" onclick="switchAuthTab('register')">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+
+                <!-- Login Panel -->
+                <div id="loginPanel" class="auth-panel active">
+                    <h3>Welcome Back!</h3>
+                    <p class="auth-sub">Login to continue your journey</p>
+
+                    <div class="auth-input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="loginIdentifier" placeholder="Email or Phone Number" autocomplete="username">
+                    </div>
+                    <div class="auth-input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+                        <button type="button" class="toggle-pw" onclick="togglePw('loginPassword', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="loginError" class="auth-error" style="display:none"></div>
+                    <button class="auth-btn" onclick="handleLogin()">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <p class="auth-switch">Don't have an account?
+                        <a href="#" onclick="switchAuthTab('register'); return false;">Register here</a>
+                    </p>
+                </div>
+
+                <!-- Register Panel -->
+                <div id="registerPanel" class="auth-panel">
+                    <h3>Create Account</h3>
+                    <p class="auth-sub">Join BusGo for seamless travel</p>
+
+                    <div class="auth-input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="regName" placeholder="Full Name">
+                    </div>
+                    <div class="auth-input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="regPhone" placeholder="Phone Number (e.g. 01700000000)">
+                    </div>
+                    <div class="auth-input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="regEmail" placeholder="Email Address">
+                    </div>
+                    <div class="auth-input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="regPassword" placeholder="Password (min 6 characters)" autocomplete="new-password">
+                        <button type="button" class="toggle-pw" onclick="togglePw('regPassword', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="registerError" class="auth-error" style="display:none"></div>
+                    <button class="auth-btn" onclick="initiateRegister()">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                    <p class="auth-switch">Already have an account?
+                        <a href="#" onclick="switchAuthTab('login'); return false;">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== HOME SECTION =================== -->
+    <section id="home" class="section">
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Book Your Bus Tickets <span class="highlight">Easily & Quickly</span></h1>
+                <p>Fast, reliable, and comfortable bus travel across Bangladesh. Book your journey with BusGo today!</p>
+                <button class="cta-btn" onclick="scrollToBooking()">
+                    <i class="fas fa-bus"></i> Book Now
+                </button>
+            </div>
+            <div class="hero-image">
+                <i class="fas fa-bus-alt"></i>
+            </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="booking-container">
+            <div class="booking-card">
+                <h2><i class="fas fa-ticket-alt"></i> Book Your Ticket</h2>
+
+                <form id="bookingForm" class="booking-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Route <span class="required">*</span></label>
+                            <select id="route" required>
+                                <option value="">Select Route</option>
+                                <option value="dhaka-cumilla">Dhaka → Cumilla (250 BDT)</option>
+                                <option value="dhaka-chattogram">Dhaka → Chattogram (650 BDT)</option>
+                                <option value="dhaka-sylhet">Dhaka → Sylhet (700 BDT)</option>
+                                <option value="dhaka-rajshahi">Dhaka → Rajshahi (800 BDT)</option>
+                                <option value="dhaka-khulna">Dhaka → Khulna (650 BDT)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ticket Type <span class="required">*</span></label>
+                            <select id="ticketType" required>
+                                <option value="oneway">One Way</option>
+                                <option value="roundway">Round Way</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Travel Date <span class="required">*</span></label>
+                            <input type="date" id="travelDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time <span class="required">*</span></label>
+                            <select id="travelTime" required>
+                                <option value="">Select Time</option>
+                                <option value="6:00 AM">6:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="6:00 PM">6:00 PM</option>
+                                <option value="10:00 PM">10:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Number of Tickets <span class="required">*</span></label>
+                        <select id="ticketCount" required>
+                            <option value="1">1 Ticket</option>
+                            <option value="2">2 Tickets</option>
+                            <option value="3">3 Tickets</option>
+                            <option value="4">4 Tickets</option>
+                            <option value="5">5 Tickets</option>
+                            <option value="6">6 Tickets</option>
+                            <option value="7">7 Tickets</option>
+                            <option value="8">8 Tickets</option>
+                            <option value="9">9 Tickets</option>
+                            <option value="10">10 Tickets</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Select Seats</label>
+                        <div id="timer">Hold Time: 2:00</div>
+                        <div id="seatMap" class="seat-map"></div>
+                        <div class="selected-seats" id="selectedSeats"></div>
+                    </div>
+
+                    <div class="booking-summary" id="bookingSummary">
+                        <h3>Booking Summary</h3>
+                        <div class="summary-row"><span>Route:</span><span id="summaryRoute">-</span></div>
+                        <div class="summary-row"><span>Ticket Type:</span><span id="summaryTicketType">-</span></div>
+                        <div class="summary-row"><span>Date & Time:</span><span id="summaryDateTime">-</span></div>
+                        <div class="summary-row"><span>Tickets:</span><span id="summaryTickets">-</span></div>
+                        <div class="summary-row"><span>Seats:</span><span id="summarySeats">-</span></div>
+                        <div class="summary-row total">
+                            <span>Total Amount:</span>
+                            <strong id="totalAmount">0 BDT</strong>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="book-btn" id="bookBtn" disabled>
+                        <i class="fas fa-credit-card"></i> Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Popular Routes -->
+        <div class="featured-routes">
+            <h2>Popular Routes</h2>
+            <div class="routes-grid">
+                <div class="route-card">
+                    <i class="fas fa-route"></i>
+                    <h3>Dhaka → Cumilla</h3>
+                    <p>250 BDT</p>
+                </div>
+                <div class="route-card">
+                    <i class="fas fa-route"></i>
+                    <h3>Dhaka → Chattogram</h3>
+                    <p>650 BDT</p>
+                </div>
+                <div class="route-card">
+                    <i class="fas fa-route"></i>
+                    <h3>Dhaka → Sylhet</h3>
+                    <p>700 BDT</p>
+                </div>
+                <div class="route-card">
+                    <i class="fas fa-route"></i>
+                    <h3>Dhaka → Rajshahi</h3>
+                    <p>800 BDT</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== ABOUT SECTION =================== -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About BusGo</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>BusGo is owned and operated by <strong>SubTech Limited</strong>, Bangladesh's one of the best system that enables fast and easy bus ticket booking.</p>
+                    <p>We provide a seamless booking experience with real-time seat availability, multiple payment options, and 24/7 customer support. Travel with confidence knowing your journey is secured with BusGo.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <span>Instant Booking</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Secure Payments</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-headset"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== CONTACT SECTION =================== -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email Us</h3>
+                        <p>busgo.subtech@yahoo.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <h3>Phone Support</h3>
+                        <p>Available 24/7</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Office</h3>
+                        <p>Dhaka, Bangladesh</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== CANCELLATION POLICY =================== -->
+    <section id="policy" class="section">
+        <div class="container">
+            <h2>Ticket Cancellation Policy</h2>
+            <div class="policy-content">
+                <h3>Cancellation Rules:</h3>
+                <ul>
+                    <li>Free cancellation within 24 hours of booking (full refund)</li>
+                    <li>25% cancellation fee if cancelled 12–24 hours before departure</li>
+                    <li>50% cancellation fee if cancelled 6–12 hours before departure</li>
+                    <li>No refund within 6 hours of departure</li>
+                    <li>Refund processing takes 5–7 working days</li>
+                    <li>Cancellation must be done through our support email or via the My Tickets section</li>
+                </ul>
+                <p><strong>Note:</strong> All cancellations are subject to availability and operator policies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== TERMS & CONDITIONS =================== -->
+    <section id="terms" class="section">
+        <div class="container">
+            <h2>Terms &amp; Conditions</h2>
+            <div class="policy-content">
+                <h3>General Terms:</h3>
+                <ul>
+                    <li>Tickets are non-transferable</li>
+                    <li>Passengers must carry printed copy of their ticket</li>
+                    <li>BusGo is not responsible for delays due to traffic or weather</li>
+                    <li>Baggage allowance: 10kg per passenger</li>
+                    <li>Smoking and alcohol are prohibited</li>
+                    <li>BusGo isn't responsible for any harm or accident caused during a trip</li>
+                    <li>Failure to report at the counter before the boarding time will result in the ticket being treated as cancelled</li>
+                    <li>Illegal or hazardous goods are prohibited, and passengers are responsible for their own luggage</li>
+                    <li>BusGo reserves the right to change schedules, seats, or ticket numbers due to emergency requirements</li>
+                </ul>
+                <p>By booking with BusGo, you agree to comply with all terms and conditions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== MY TICKETS / CANCELLATION =================== -->
+    <section id="cancel" class="section">
+        <div class="container">
+            <h2>My Tickets</h2>
+            <div id="myTicketsList">
+                <div class="tickets-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading your tickets...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =================== BOOKING CONFIRMATION MODAL =================== -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-check-circle"></i> Booking Confirmed!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Your booking has been successfully confirmed! Download your e-ticket below.</p>
+                <div class="booking-details">
+                    <p><strong>Booking Reference:</strong> <span id="confirmRef">-</span></p>
+                    <p><strong>Passenger:</strong> <span id="confirmPassenger">-</span></p>
+                    <p><strong>Route:</strong> <span id="confirmRoute">-</span></p>
+                    <p><strong>Date &amp; Time:</strong> <span id="confirmDateTime">-</span></p>
+                    <p><strong>Seats:</strong> <span id="confirmSeats">-</span></p>
+                    <p><strong>Total:</strong> <span id="confirmTotal">-</span></p>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-row">
+                <button class="btn-pdf" onclick="downloadTicketPDF()">
+                    <i class="fas fa-download"></i> Download Ticket PDF
+                </button>
+                <button class="btn-primary" onclick="closeModal()">
+                    <i class="fas fa-plus"></i> Book Another
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================== TERMS AGREEMENT MODAL (Registration) =================== -->
+    <div id="termsAgreementModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-contract"></i> Terms &amp; Conditions</h2>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom:12px; color:#555; font-size:0.9rem;">
+                    Please read and agree to our Terms &amp; Conditions to complete your registration.
+                </p>
+                <div class="terms-scroll-box">
+                    <h4>General Terms:</h4>
+                    <ul class="terms-list-inline">
+                        <li>Tickets are non-transferable.</li>
+                        <li>Passengers must carry printed copy of their ticket.</li>
+                        <li>BusGo is not responsible for delays due to traffic or weather.</li>
+                        <li>Baggage allowance: 10kg per passenger.</li>
+                        <li>Smoking and alcohol are prohibited on all buses.</li>
+                        <li>BusGo isn't responsible for any harm or accident caused during a trip.</li>
+                        <li>Failure to report at the counter before the boarding time will result in the ticket being treated as cancelled.</li>
+                        <li>Illegal or hazardous goods are prohibited, and passengers are responsible for their own luggage.</li>
+                        <li>BusGo reserves the right to change schedules, seats, or ticket numbers due to emergency requirements.</li>
+                    </ul>
+                    <h4 style="margin-top:14px;">Cancellation Policy:</h4>
+                    <ul class="terms-list-inline">
+                        <li>Free cancellation within 24 hours of booking (full refund).</li>
+                        <li>25% cancellation fee if cancelled 12–24 hours before departure.</li>
+                        <li>50% cancellation fee if cancelled 6–12 hours before departure.</li>
+                        <li>No refund within 6 hours of departure.</li>
+                        <li>Refund processing takes 5–7 working days.</li>
+                    </ul>
+                    <p style="margin-top:14px; font-size:0.85rem; color:#888; font-style:italic;">
+                        By registering, you agree to comply with all the above terms and conditions.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-row">
+                <button class="btn-secondary" onclick="declineTerms()">
+                    <i class="fas fa-times"></i> Decline
+                </button>
+                <button class="btn-primary" onclick="agreeTerms()">
+                    <i class="fas fa-check"></i> I Agree &amp; Register
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================== REFUND SUCCESS MODAL =================== -->
+    <div id="refundModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header refund-header">
+                <div class="refund-icon-wrap"><i class="fas fa-check-circle"></i></div>
+                <h2>Ticket Cancelled</h2>
+            </div>
+            <div class="modal-body refund-body">
+                <p class="refund-booking-ref" id="refundBookingRef"></p>
+                <div class="refund-amount-card">
+                    <span class="refund-label">Refund Amount</span>
+                    <span class="refund-amount" id="refundAmount">0 BDT</span>
+                    <span class="refund-breakdown" id="refundBreakdown"></span>
+                </div>
+                <p class="refund-note" id="refundNote"></p>
+                <p class="refund-timeline" id="refundTimeline"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeRefundModal()">
+                    <i class="fas fa-thumbs-up"></i> Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================== CANCEL CONFIRMATION MODAL =================== -->
+    <div id="cancelConfirmModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header modal-header-warning">
+                <h2><i class="fas fa-exclamation-triangle"></i> Cancel Ticket?</h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this ticket?</p>
+                <p style="margin-top:10px; font-size:0.88rem; color:#666;">
+                    Please review our <a href="#" onclick="showSection('policy'); closeCancelModal(); return false;" style="color:var(--pink-dark);">Cancellation Policy</a> for refund details. No refund is issued within 6 hours of departure.
+                </p>
+                <input type="hidden" id="cancelBookingId">
+            </div>
+            <div class="modal-footer modal-footer-row">
+                <button class="btn-secondary" onclick="closeCancelModal()">
+                    <i class="fas fa-arrow-left"></i> Keep Ticket
+                </button>
+                <button class="btn-danger" onclick="proceedCancelTicket()">
+                    <i class="fas fa-times-circle"></i> Yes, Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script3.js"></script>
+</body>
+</html>
